@@ -37,8 +37,6 @@ pip install -r requirements.txt
 streamlit run your_app.py
 ```
 
-5. 웹 브라우저에서 `localhost:8501`로 이동하여 애플리케이션을 확인합니다.
-
 ## 기능
 
 ### 데이터 업데이트 간격 설정
@@ -73,3 +71,8 @@ streamlit run your_app.py
 ## 기여
 
 이 프로젝트에 관심이 있거나 버그를 발견한 경우, 이슈를 제출하거나 풀 리퀘스트를 보내주세요!
+
+
+## 라이선스
+
+이 프로젝트는 MIT 라이선스에 따라 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
