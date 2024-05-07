@@ -1,25 +1,43 @@
-# 실시간 전력 모니터링
+# 실시간 전력 모니터링 및 통계 정보
 
-이 애플리케이션은 스트림릿(Streamlit)을 사용하여 실시간으로 전력 데이터를 모니터링하고 시각화하는 데 사용됩니다. Firebase를 사용하여 데이터를 저장하고 불러옵니다. Firebase Admin SDK를 사용하기 위해 인증 정보가 필요하며, Firebase Realtime Database에는 데이터베이스가 설정되어 있어야 합니다.
+이 프로젝트는 Streamlit을 사용하여 실시간으로 전력을 모니터링하고 통계 정보를 제공하는 애플리케이션입니다. Firebase Realtime Database에서 전력 데이터를 가져와 사용자는 웹 앱을 통해 데이터를 시각화하고 통계를 확인할 수 있습니다.
+
+## 사용된 기술
+
+- Python
+- Streamlit
+- Firebase Realtime Database
+- Matplotlib
+- Pandas
 
 ## 설치 및 실행
 
-1. **저장소 클론**: 아래 명령을 사용하여 저장소를 클론합니다.
-    ```bash
-    git clone https://github.com/your_username/your_repository.git
-    ```
+1. 저장소를 클론합니다:
 
-2. **라이브러리 설치**: 아래 명령을 사용하여 필요한 라이브러리를 설치합니다.
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+git clone https://github.com/yourusername/your-repo.git
+```
 
-3. **Firebase 설정**: Firebase 콘솔에서 Firebase Admin SDK에 필요한 인증 정보를 다운로드하여 `C:/test/test-486a8-firebase-adminsdk-6jl9k-2bf67a04df.json` 경로에 저장합니다. 또한, Firebase Realtime Database에는 데이터베이스가 설정되어 있어야 하며, 데이터베이스 URL은 `https://test-486a8-default-rtdb.firebaseio.com/`로 설정되어 있어야 합니다.
+2. 필요한 라이브러리를 설치합니다:
 
-4. **애플리케이션 실행**: 아래 명령을 사용하여 애플리케이션을 실행합니다.
-    ```bash
-    streamlit run app.py
-    ```
+```bash
+pip install -r requirements.txt
+```
+
+3. Firebase 설정
+
+   - Firebase 프로젝트를 생성하고 애플리케이션을 추가합니다.
+   - Firebase Realtime Database를 사용하도록 설정하고 해당 URL을 코드에 반영합니다.
+   - 서비스 계정 키를 생성하고 해당 JSON 파일을 프로젝트 디렉토리에 추가합니다.
+   - 코드에서 JSON 파일의 경로를 수정하여 로컬 디렉토리에 있는 파일을 참조하도록 합니다.
+
+4. 애플리케이션을 실행합니다:
+
+```bash
+streamlit run your_app.py
+```
+
+5. 웹 브라우저에서 `localhost:8501`로 이동하여 애플리케이션을 확인합니다.
 
 ## 기능
 
@@ -51,16 +69,7 @@
 
 - 24시간 중 전력 사용이 가장 많은 시간대를 파이 차트로 표시합니다.
 
-## 개발 환경
-
-- Python 3.7 이상
-- Streamlit
-- Firebase Admin SDK
 
 ## 기여
 
-기여는 언제나 환영합니다! 버그를 신고하거나 새로운 기능을 제안해 주세요.
-
-## 라이선스
-
-이 프로젝트는 MIT 라이선스에 따라 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+이 프로젝트에 관심이 있거나 버그를 발견한 경우, 이슈를 제출하거나 풀 리퀘스트를 보내주세요!
