@@ -9,13 +9,13 @@ from datetime import datetime, timedelta
 from statistics import stdev
 
 # Firebase 인증 및 초기화
-cred = credentials.Certificate("C:/test/test-486a8-firebase-adminsdk-6jl9k-2bf67a04df.json")
+cred = credentials.Certificate("")
 try:
     app = get_app()
 except ValueError:
-    app = initialize_app(cred, {'databaseURL': 'https://test-486a8-default-rtdb.firebaseio.com/'})
+    app = initialize_app(cred, {'databaseURL': ''})
 
-ref = db.reference('realPower')
+ref = db.reference('')
 
 # 사용자가 선택한 업데이트 간격을 가져옴
 update_interval = st.slider("데이터 업데이트 간격 (초)", min_value=1, max_value=60, value=10, key='interval_slider_1')
