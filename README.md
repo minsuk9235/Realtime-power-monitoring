@@ -41,6 +41,8 @@ streamlit run your_app.py
 
 ### 로그인 및 회원가입
 
+![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/019bf76c-e6db-4100-b060-7d7d4326a648)
+
 - 사용자는 로그인 또는 회원가입을 할 수 있습니다.
 - Firebase Authentication을 사용하여 사용자를 인증합니다.
 
