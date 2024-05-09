@@ -48,29 +48,46 @@ streamlit run your_app.py
 
 ### 데이터 업데이트 간격 설정
 
+![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/a644495e-1436-499d-b1ec-95bbac343fa3)
+
+
 - 사용자는 데이터 업데이트 간격을 1초에서 60초 사이에서 선택할 수 있습니다.
 
 ### 실시간 전력값 표시
+
+![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/c9883d1e-b857-4090-af9e-77fff4ea47d2)
 
 - 애플리케이션은 실시간으로 현재 전력값을 표시합니다.
 
 ### 그래프
 
+![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/43779a1e-e53a-4cad-aa67-3291860b7bc7)
+
 - 실시간 전력 데이터를 그래프로 시각화하여 전력의 변화를 추적할 수 있습니다.
+- 그래프에 출력할 테이터 양을 결정할 수 있습니다.
 
 ### 날짜 및 시간 선택
+
+![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/6e3fcce2-52e6-4e08-8db4-d077dc3c26d5)
 
 - 사용자는 원하는 날짜와 시간을 선택하여 해당 시간에 기록된 전력 데이터를 확인할 수 있습니다.
 
 ### 통계 정보
 
+![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/7e54aef0-5732-4fb1-a13e-e01fdcc853e6)
+
 - 오늘의 통계 정보를 표시하여 평균 전력, 최소 전력, 최대 전력 및 표준 편차를 확인할 수 있습니다.
 
 ### 누적 전력량
 
-- 오늘까지의 누적 전력량을 표시합니다.
+![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/409b2b20-f4cb-4adb-bfc7-bbe46c562006)
+
+
+- 누적 전력량을 표시합니다.
 
 ### 전력 사용 시간
+
+![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/a4286740-35e9-4e53-86dd-004026ea7ca1)
 
 - 24시간 중 전력 사용이 가장 많은 시간대를 파이 차트로 표시합니다.
 
