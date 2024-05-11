@@ -2,6 +2,8 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import time
+import matplotlib.dates as mdates
 from firebase_admin import credentials, db, initialize_app, auth
 from datetime import datetime, timedelta
 from statistics import stdev
@@ -9,14 +11,11 @@ from firebase_admin import auth
 from streamlit_autorefresh import st_autorefresh
 
 # Firebase 인증 및 초기화
-cred = credentials.Certificate("path/to/serviceAccountKey.json") # 수정
+cred = credentials.Certificate("path/to/serviceAccountKey.json")
 try:
-    app = initialize_app(cred, {'databaseURL': 'https://[PROJECT_ID]-default-rtdb.firebaseio.com/'}) # 수정
+    app = initialize_app(cred, {'databaseURL': 'https://[PROJECT_ID]-default-rtdb.firebaseio.com/'})
 except ValueError:
     pass  # 이미 초기화된 경우 아무 작업도 수행하지 않음
-
-# Firebase 데이터베이스에 불러올 경로 지정
-ref = db.reference('realPower') # 수정
 
 # 사용자가 선택한 업데이트 주기를 슬라이더로 가져옴
 update_interval = st.sidebar.slider("데이터 업데이트 간격 (초)", min_value=1, max_value=60, value=10, key='interval_slider_1')
@@ -46,6 +45,7 @@ if "user" not in st.session_state:
                 st.session_state["user"] = user.uid  # 사용자의 고유 식별자를 세션 상태에 저장합니다.
                 
                 # 페이지 새로 고침
+                time.sleep(2)
                 st.experimental_rerun()
 
             except Exception as e:
@@ -55,9 +55,10 @@ if "user" not in st.session_state:
     elif selected_page == "회원가입":
         st.markdown("<h1 style='text-align: center;'>회원가입</h1>", unsafe_allow_html=True)
 
-        # 이메일과 비밀번호 입력
+        # 이메일과 비밀번호, Firebase 경로 입력
         email = st.text_input("이메일")
         password = st.text_input("비밀번호", type="password")
+        firebase_path = st.text_input("Firebase 경로")  # 사용자로부터 Firebase 경로 입력 받음
 
         # 회원가입 버튼 클릭 시
         if st.button("회원가입"):
@@ -67,9 +68,15 @@ if "user" not in st.session_state:
                     email=email,
                     password=password
                 )
+                # 사용자의 Firebase 경로 저장
+                user_ref = db.reference(f'users/{user.uid}')
+                user_ref.set({
+                    'firebase_path': firebase_path  # Firebase 경로 저장
+                })
                 st.success("회원가입이 완료되었습니다. 이제 로그인하세요.")
                 
                 # 페이지 새로 고침
+                time.sleep(2)
                 st.experimental_rerun()
 
             except Exception as e:
@@ -77,6 +84,12 @@ if "user" not in st.session_state:
 
 # 로그인이 성공했을 때만 실시간 전력 모니터링 및 통계 정보에 액세스할 수 있도록 설정
 if "user" in st.session_state:
+    user_ref = db.reference(f'users/{st.session_state["user"]}')
+    user_info = user_ref.get()
+    firebase_path = user_info['firebase_path']  # 사용자 Firebase 경로 가져오기
+
+    ref = db.reference(firebase_path)  # 사용자가 지정한 경로에서 데이터를 가져옵니다.
+
     selected_page = st.sidebar.radio("페이지", ["실시간 전력 모니터링", "통계 정보"])
 
     # 로그아웃 버튼
@@ -85,6 +98,7 @@ if "user" in st.session_state:
         st.success("로그아웃 되었습니다.")
         
         # 페이지 새로 고침
+        time.sleep(2)
         st.experimental_rerun()
 
     if selected_page == "실시간 전력 모니터링":
@@ -130,40 +144,40 @@ if "user" in st.session_state:
             else:
                 return data
 
+        # 그래프 그리기
         def plot_graph(data, yesterday_data):
-            # 그래프 그리기
-            x = [item[0] for item in data]
-            y = [item[1] for item in data]
-            min_y = min(y)
-            max_y = max(y)
-
             fig, ax = plt.subplots(figsize=(10, 6))
-                
-            # 오늘 데이터 그리기
-            ax.plot(x, y, '-o', color='skyblue', linewidth=2, markersize=8, markeredgecolor='black', markeredgewidth=1, label='Real Power (Today)')
-                
-            # 어제 데이터 그리기
+
+            # 오늘의 데이터 처리
+            if data:
+                x_today = [item[0] for item in data]
+                y_today = [item[1] for item in data]
+                ax.plot(x_today, y_today, '-o', color='skyblue', linewidth=2, markersize=8, markeredgecolor='black', markeredgewidth=1, label='Real Power (Today)')
+
+            # 어제의 데이터 처리
             if yesterday_data:
-                x_yesterday = [item[0] for item in yesterday_data]
+                # 어제 데이터의 시간을 오늘 날짜로 조정
+                x_yesterday = [item[0].replace(year=datetime.now().year, month=datetime.now().month, day=datetime.now().day) for item in yesterday_data]
                 y_yesterday = [item[1] for item in yesterday_data]
                 ax.plot(x_yesterday, y_yesterday, '--', color='gray', linewidth=2, label='Real Power (Yesterday)')
-                
-            # 추세선 추가
-            z = np.polyfit(range(len(y)), y, 1)
-            p = np.poly1d(z)
-            ax.plot(x, p(range(len(y))), color='orange', linestyle='--', linewidth=2, label='Trend Line')
-                
+
             # 최신 지점에서 실시간 전력 값 추가
             latest_time, latest_value = data[-1]
             ax.text(latest_time, latest_value, f'{latest_value} [W]', fontsize=10, ha='right', va='bottom', color='black')
-                
+
+            # 그래프 설정
             ax.set_xlabel('Time')
             ax.set_ylabel('Real Power [W]')
             ax.set_title('Real Power Over Time')
-            ax.set_ylim(min_y - 0.1 * abs(min_y), max_y + 0.1 * abs(max_y))
-            ax.set_xlim(x[0], x[-1])
-            ax.grid(True)
             ax.legend()
+            ax.grid(True)
+
+            # 가로 축, 세로 축 자동 조절
+            if data:
+                min_y = min(y_today)
+                max_y = max(y_today)
+                ax.set_ylim(min_y - 0.1 * abs(min_y), max_y + 0.1 * abs(max_y))
+                ax.set_xlim(x_today[0], x_today[-1])
 
             st.pyplot(fig)
 
