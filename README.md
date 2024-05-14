@@ -63,7 +63,7 @@ streamlit run your_app.py
 
 ### 그래프
 
-![image](https://github.com/minsuk9235/Streamlit-firebase/assets/169111946/43779a1e-e53a-4cad-aa67-3291860b7bc7)
+![image](https://github.com/minsuk9235/Realtime-power-monitoring/assets/169111946/89e62e48-6b40-47c6-9975-ea3a011c3eea)
 
 - 실시간 전력 데이터를 그래프로 시각화하여 전력의 변화를 추적할 수 있습니다.
 - 그래프에 출력할 테이터 양을 결정할 수 있습니다.
